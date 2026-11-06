@@ -1,0 +1,19 @@
+name: Publish owned upstream package
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish package
+        run: |
+          echo "${{ github.token }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          docker build -t ghcr.io/per0x1de-1337/codex-ghcr-upstream-20261106164100:stable .
+          docker push ghcr.io/per0x1de-1337/codex-ghcr-upstream-20261106164100:stable
